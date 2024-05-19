@@ -32,6 +32,11 @@ fi
 local content
 content=$(<"$tmp_file")
 
+if [ -z "$content" ]; then
+    echo "No draft message provided. Operation aborted."
+    return
+fi
+
 # Add a new draft with the content
 local draft_id
 draft_id=$(osascript -e 'tell application "Drafts"
@@ -40,7 +45,6 @@ draft_id=$(osascript -e 'tell application "Drafts"
 
 # Remove the 'draft id ' prefix to just return the draft ID
 draft_id="${draft_id:9}"
-
 echo "Draft created successfully with ID: $draft_id"
 
 # Remove the temporary file (trap will ensure this is done on script exit)
